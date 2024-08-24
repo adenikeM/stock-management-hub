@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5437:5432"
+    environment:
+      - POSTGRES_USER=progress
+      - POSTGRES_PASSWORD=aaaa
+      - POSTGRES_DB=hub_db
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
