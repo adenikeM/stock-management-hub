@@ -6,7 +6,7 @@ services:
     ports:
       - "5437:5432"
     environment:
-      - POSTGRES_USER=progress
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=aaaa
       - POSTGRES_DB=hub_db
     volumes:
