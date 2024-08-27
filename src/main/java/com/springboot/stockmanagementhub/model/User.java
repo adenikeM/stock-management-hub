@@ -44,8 +44,6 @@ public class User implements Serializable, UserDetails {
     @Past
     private LocalDate birthDate;
 
-    @NotEmpty
-    @Column(name="user_name", nullable = false, unique = true, updatable = false)
     private String userName;
 
     @NotEmpty
@@ -56,9 +54,6 @@ public class User implements Serializable, UserDetails {
     private Address address;
 
     @NotEmpty
-    @Size(min = 8, message = "Password must be at least 8 character long with " +
-            "1 uppercase, 1 lowercase, 2 digit and 1 symbol")
-    @ValidPassword
     private String password;
 
     private LocalDateTime createdAt;

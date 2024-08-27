@@ -2,12 +2,14 @@ package com.springboot.stockmanagementhub.constraint;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.extern.slf4j.Slf4j;
 import org.passay.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
 
     @Override
@@ -19,7 +21,7 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
     public boolean isValid(String password, ConstraintValidatorContext context) {
         PasswordValidator validator = new PasswordValidator(Arrays.asList(
                 new LengthRule(8, 16),
-                new CharacterRule(EnglishCharacterData.UpperCase, 1),
+                new CharacterRule(EnglishCharacterData.UpperCase,1),
                 new CharacterRule(EnglishCharacterData.LowerCase, 1),
                 new CharacterRule(EnglishCharacterData.Digit, 2),
                 new CharacterRule(EnglishCharacterData.Special, 1),
@@ -36,6 +38,7 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
         context.buildConstraintViolationWithTemplate(messageTemplate)
                .addConstraintViolation()
                .disableDefaultConstraintViolation();
+        System.err.println("Password validation failed: " + messageTemplate);
         return false;
     }
 }
