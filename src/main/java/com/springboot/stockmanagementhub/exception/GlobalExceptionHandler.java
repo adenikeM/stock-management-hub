@@ -72,6 +72,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        System.out.println("DataIntegrityViolationException caught in GlobalExceptionHandler");
         // Log the exception for debugging purposes
         ex.printStackTrace();
 

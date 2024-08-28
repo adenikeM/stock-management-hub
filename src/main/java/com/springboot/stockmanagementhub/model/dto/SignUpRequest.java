@@ -34,6 +34,5 @@ public class SignUpRequest {
     @ValidPassword
     String password;
 
-
     String roleTitle;
 }
