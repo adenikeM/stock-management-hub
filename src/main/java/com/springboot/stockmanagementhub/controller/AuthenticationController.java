@@ -21,13 +21,13 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public JwtAuthenticationResponse signup(@Valid @RequestBody SignUpRequest request){
+    public JwtAuthenticationResponse signup(@Valid @RequestBody SignUpRequest request) {
         log.info("login request {}", request);
         return authenticationService.signup(request);
     }
+
     @PostMapping("/signin")
-    public JwtAuthenticationResponse signin(@RequestBody SignInRequest request){
+    public JwtAuthenticationResponse signin(@RequestBody SignInRequest request) {
         return authenticationService.signin(request);
     }
-
 }
