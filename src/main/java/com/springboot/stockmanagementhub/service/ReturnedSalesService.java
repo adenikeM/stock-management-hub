@@ -3,6 +3,7 @@ package com.springboot.stockmanagementhub.service;
 import com.springboot.stockmanagementhub.model.MailDetails;
 import com.springboot.stockmanagementhub.model.Product;
 import com.springboot.stockmanagementhub.model.ReturnedSales;
+import com.springboot.stockmanagementhub.model.Sales;
 import com.springboot.stockmanagementhub.model.dto.ProductReturn;
 import com.springboot.stockmanagementhub.model.enumeration.ReturnReason;
 import com.springboot.stockmanagementhub.repository.ProductRepository;
