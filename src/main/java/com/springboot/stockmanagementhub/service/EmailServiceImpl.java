@@ -16,6 +16,7 @@ public class EmailServiceImpl implements EmailService  {
         this.javaMailSender = javaMailSender;
     }
 
+
     public void sendMail(EmailDetails details) {
         log.info("Enter send mail service method {}", details);
         try{
