@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,11 +25,13 @@ public class SalesController {
     }
 
     @GetMapping("/sales")
+    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('SALES ATTENDANT')")
     public ResponseEntity<List<Sales>> getAllSale() {
         return ResponseEntity.ok().body(salesService.getAllSale());
     }
 
     @GetMapping("/v2/sales")
+    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('SALES ATTENDANT')")
     public ResponseEntity<List<Sales>> getAllSale2(
             @RequestParam(name = "pageNo", defaultValue = "0") int pageNo,
             @RequestParam(name = "pageSize", defaultValue = "0") int pageSize){
@@ -37,12 +40,14 @@ public class SalesController {
         return ResponseEntity.ok(sales.getContent());
     }
     @GetMapping("/v3/sales")
+    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('SALES ATTENDANT')")
     public ResponseEntity<List<Sales>> getAllSales3(Pageable pageable){
         Page<Sales> sales = salesService.getAllSales3(pageable);
         return ResponseEntity.ok(sales.getContent());
     }
 
     @GetMapping("/sales/{id}")
+    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('SALES ATTENDANT')")
     public ResponseEntity<?> getSaleByID(@PathVariable Long id) {
         log.info("Get sale id by " + id);
         if (id < 1) {
@@ -52,7 +57,8 @@ public class SalesController {
                            .map(sale -> ResponseEntity.ok().body(sale))
                            .orElseGet(() -> ResponseEntity.notFound().build());
     }
-    @GetMapping("/sales/{salesDate}")
+    @GetMapping("/sales-by-date")
+    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('SALES ATTENDANT')")
     public ResponseEntity<List<SaleResponseDTO>> getSalesByDate(@PathVariable LocalDateTime salesDate) {
         List<SaleResponseDTO> salesResponseDTOs = salesService.getSalesByDate(salesDate);
         return ResponseEntity.ok(salesResponseDTOs);
@@ -60,6 +66,7 @@ public class SalesController {
     }
 
     @DeleteMapping("/sales/{id}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<Sales> deleteSale(@PathVariable Long id) {
         salesService.deleteSale(id);
         return ResponseEntity.noContent().build();

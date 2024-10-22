@@ -1,6 +1,7 @@
 package com.springboot.stockmanagementhub.model.dto;
 
 import com.springboot.stockmanagementhub.model.CustomerInfo;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 

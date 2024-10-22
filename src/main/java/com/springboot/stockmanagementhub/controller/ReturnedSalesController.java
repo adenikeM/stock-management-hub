@@ -5,6 +5,7 @@ import com.springboot.stockmanagementhub.model.dto.ReturnedSalesRequest;
 import com.springboot.stockmanagementhub.service.ReturnedSalesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,7 @@ public class ReturnedSalesController {
     }
 
     @GetMapping("/returnedSales/{id}")
+    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('SALES ATTENDANT')")
     public ResponseEntity<ReturnedSales> getReturnedSalesById(@PathVariable Long id){
         ReturnedSales returnedSales = returnedSalesService.getReturnedSalesById(id);
         if (returnedSales == null) {

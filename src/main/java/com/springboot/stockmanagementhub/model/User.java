@@ -60,7 +60,7 @@ public class User implements Serializable, UserDetails {
 
     private LocalDateTime updatedAt;
 
-    @OneToOne
+    @ManyToOne
     private Role userRole;
 
 

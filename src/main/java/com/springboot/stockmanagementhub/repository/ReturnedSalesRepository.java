@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReturnedSalesRepository extends JpaRepository<ReturnedSales, Long> {
+    boolean existsByProduct_Id(Long id);
 }

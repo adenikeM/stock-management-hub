@@ -24,6 +24,12 @@ public class ReturnedSalesService {
     private final ProductRepository productRepository;
     private final EmailService emailService;
 
+    private static final String MESSAGE_BODY =
+            "Dear Customer, %s" +
+                    "We have received your returned products.%s" +
+                    "The refund amount of %s has been processed and confirmed.%s" +
+                    "Thank you for shopping with us. %s" +
+                    "Best regards";
     public ReturnedSales createReturnedSales(Long salesId, List<ProductReturn> productReturn, ReturnReason reasonForReturn, String additionalComments) {
         // Retrieve sales entity
         Sales sales = salesRepository.findById(salesId).orElseThrow(() -> new RuntimeException("Sales with id " + salesId + " not found"));
@@ -76,16 +82,17 @@ public class ReturnedSalesService {
             returnedSales = returnedSalesRepository.save(returnedSales);
         }
 
-        // send mail to customer
-        emailService.sendRefundEmail(MailDetails.builder()
-                                                .recipient(sales.getCustomerInfo().getEmail())
-                                                .subject("Product Return and Refund Confirmation")
-                                                .msgBody("Dear Customer, \n\n"
-                                                        + "We have received your returned products. \n"
-                                                        + "The refund amount of " + totalRefundAmount + " has been processed and confirm"
-                                                        + "Thank you for shopping with us. \n\n"
-                                                        + "Best regards")
-                                                .build());
+        // Format the message body with the total refund amount
+        String messageBody = String.format(MESSAGE_BODY, "\n\n", "\n", totalRefundAmount, "\n\n", "\n");
+
+        // Send email to customer
+        emailService.sendRefundEmail(
+                MailDetails
+                        .builder()
+                        .recipient(sales.getCustomerInfo().getEmail())
+                        .subject("Product Return and Refund Confirmation")
+                        .messageBody(messageBody)
+                        .build());
         return returnedSales;
     }
 

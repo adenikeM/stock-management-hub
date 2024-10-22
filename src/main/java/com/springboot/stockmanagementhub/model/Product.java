@@ -1,5 +1,6 @@
 package com.springboot.stockmanagementhub.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Past;
@@ -34,6 +35,7 @@ public class Product implements Serializable {
     @Column(length = 20, nullable = false)
     private BigDecimal price;
 
+    @JsonProperty("productColour")
     @Column(length = 20, nullable = false)
     private String colour;
 
@@ -58,5 +60,13 @@ public class Product implements Serializable {
     //method for adding custom property
     public void addSetting(String key, String value) {
         this.settings.put(key, value);
+    }
+
+    public String getProductName() {
+        return name.toLowerCase() + " " + colour.toLowerCase();
+    }
+
+    public BigDecimal getSumOfProductPrice() {
+        return price.multiply(new BigDecimal(availableQuantity));
     }
 }

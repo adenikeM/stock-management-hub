@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,6 +63,7 @@ public class ProductCategoryController {
     }
 
     @PostMapping("/category")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> createProductCategory(@RequestBody ProductCategory productCategory) {
         log.info("Request to create product category => {}", productCategory);
         if (productCategory.getId() != null) {
@@ -76,12 +78,14 @@ public class ProductCategoryController {
     }
 
     @PostMapping("/v2/category")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> createProductCategory(@Valid @RequestBody ProductCategoryDTO createProductCategoryDTO) {
         log.info("Request to create product category v2 => {}", createProductCategoryDTO);
         return ResponseEntity.ok().body(productCategoryService.createProductCategoryV2(createProductCategoryDTO));
     }
 
     @PutMapping("/category")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> updateProductCategory(@RequestBody ProductCategory productCategory) {
         if (productCategory.getId() == null) {
             return ResponseEntity.badRequest().body(
@@ -105,6 +109,7 @@ public class ProductCategoryController {
     }
 
     @PutMapping("/v2/category/{id}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> updateProductCategoryV2(@Valid @RequestBody ProductCategoryDTO updateProductCategoryDTO, @PathVariable Long id) {
         log.info("Incoming request to update product category v2 with id {} and payload {}", id, updateProductCategoryDTO);
         ProductCategory updatedProductCategoryV2 = productCategoryService.updateProductCategoryV2(id, updateProductCategoryDTO);

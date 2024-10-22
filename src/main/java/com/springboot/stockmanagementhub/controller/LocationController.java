@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,6 +61,7 @@ public class LocationController {
     }
 
     @PostMapping("/locations")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> createLocation(@RequestBody Location location) {
         log.info("Request to create location => {}", location);
         if (location.getId() != null) {
@@ -74,6 +76,7 @@ public class LocationController {
     }
 
     @PutMapping("/locations")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> updateLocation(@RequestBody Location location) {
         if (location.getId() == null) {
             return ResponseEntity.badRequest().body(

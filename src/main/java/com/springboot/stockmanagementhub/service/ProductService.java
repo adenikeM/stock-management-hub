@@ -2,15 +2,16 @@ package com.springboot.stockmanagementhub.service;
 
 import com.springboot.stockmanagementhub.model.*;
 import com.springboot.stockmanagementhub.model.dto.*;
-import com.springboot.stockmanagementhub.repository.AddressRepository;
-import com.springboot.stockmanagementhub.repository.CustomerInfoRepository;
-import com.springboot.stockmanagementhub.repository.ProductRepository;
+import com.springboot.stockmanagementhub.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -28,11 +29,13 @@ public class ProductService {
     private final ProductCategoryService productCategoryService;
     private final CustomerInfoRepository customerInfoRepository;
     private final SalesService salesService;
+    private final SalesRepository salesRepository;
+    private final ReturnedSalesRepository returnedSalesRepository;
     private final AddressRepository addressRepository;
     private final EmailService emailService;
 
     public List<Product> getAllProduct() {
-        return productRepository.findAll();
+        return productRepository.findAll(Sort.by(Sort.Order.asc("id")));
     }
 
     public Page<Product> getAllProduct2(int pageNo, int pageSize) {
@@ -94,7 +97,10 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        productRepository.findById(id);
+        if (salesRepository.existsByProducts_Id(id) || returnedSalesRepository.existsByProduct_Id(id)) {
+            throw new IllegalStateException("Cannot delete product with id " + id + " because it is associated with existing sales or returned sales.");
+        }
+        productRepository.deleteById(id);
     }
 
     public Product createProductV2(ProductDTO createProductDTO) {
@@ -214,7 +220,8 @@ public class ProductService {
         //create customer info if not exist or retrieve if exist
         CustomerInfo customerInfo = sellProductsDTO.getCustomerInfo();
         if (customerInfo.getId() == null) {
-            Address address = addressRepository.save(customerInfo.getAddress());
+            Address address = customerInfo.getAddress();
+            address = addressRepository.save(address);
             customerInfo.setAddress(address);
             customerInfo = customerInfoRepository.save(customerInfo);
         } else {

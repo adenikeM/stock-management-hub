@@ -13,8 +13,8 @@ public class DataInitializer {
 
     @PostConstruct
     public void init() {
-        createRoleIfNotExists("ADMIN");
-        createRoleIfNotExists("USER");
+        createRoleIfNotExists("MANAGER");
+        createRoleIfNotExists("CUSTOMER");
         createRoleIfNotExists("SALES ATTENDANT");
     }
 

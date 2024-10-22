@@ -37,14 +37,19 @@ public class EmailServiceImpl implements EmailService  {
     }
 
     public void sendRefundEmail(MailDetails details) {
+        log.info("Enter send refund email service method {}", details);
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("horythorkehadenike@gmail.com");
             message.setTo(details.recipient());
             message.setSubject(details.subject());
-            message.setText(details.msgBody());
-        }catch (Exception e){
-            e.printStackTrace();
+            message.setText(details.messageBody());
+
+            log.info("Sending refund email: {}", message);
+            javaMailSender.send(message);
+            log.info("Refund email sent successfully to {}", details.recipient());
+        } catch (Exception e) {
+            log.error("Error occurred while sending refund email: {}", e.getMessage(), e);
         }
     }
 

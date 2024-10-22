@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/auth/")
 @RequiredArgsConstructor
-@CrossOrigin(methods = {POST, GET, PATCH, PUT}, origins = "localhost:8080")
+//@CrossOrigin(methods = {POST, GET, PATCH, PUT}, origins = "localhost:8080")
 @Slf4j
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
